@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue清单应用 by Louis</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="main">
+    <div class="navbar">
+        <h1 >Vue清单应用</h1>
+    </div>
+    <div class="header">
+        想要做什么?
+    </div>
+    <div class="wrap list-group">
+        <form @submit.prevent="merge" class="task-form list-group-item">
+            <input id="task-input" v-model="current.title" type="text"
+            placeholder="想做什么">
+            <div v-if="current.id" class="detail">
+                <textarea v-model="current.desc" placeholder="请输入具体内容..."
+                style="width: 100%;max-width: 100%;"></textarea>
+                <div style="margin: 10px 30px;">
+                    提醒时间:
+                    <input v-model="current.alert_at" type="datetime-local">
+                    <button class="btn btn-danger btn-block" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+        <div class="task-list incompleted">
+            <!--组件 模块化-->
+            <task :todo="todo" v-if="!todo.completed" v-for="(todo,index) in list"></task>
+        </div>
+        <div class="task-list">
+            <div class="header">已完成</div>
+            <div  v-if="todo.completed" v-for="(todo,index) in list"
+            class="completed task-item list-group-item">
+                <!--按钮-->
+                <!--修改1 已完成的不让倒置成未完成 禁用按钮disabled="disabled"-->
+                <button class="btn btn-default" type="button" disabled="disabled" @click="toggle_complete(todo.id)">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+                {{todo.title}}
+                <div class="btn-group" style="float:right;">
+                    <!--按钮组-->
+                    <button class="btn btn-default"@click="toggle_detail(todo.id)">
+                        <span class="glyphicon glyphicon-option-horizontal"></span>
+                    </button>
+                    <button class="btn btn-default"@click="remove(todo.id)">
+                        <!--这里remove也必须传进id,否则删错对象-->
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <button class="btn btn-default"@click="set_current(todo)">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                    <!--下面这个弹出层不能放在按钮组里面,否则弹出后三个按钮都没法点了-->
+                </div>
+                <div v-if="todo.show_detail" class="detail">
+                    {{todo.desc || '暂无详情'}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<audio id="beep" src="media/beep.wav" controls style="display:none"></audio>
+<template id="task-tpl">
+    <!--模板里没有了v-for迭代  v-if显示-->
+    <div class="task-item list-group-item">
+        <!--按钮-->
+        <button class="btn btn-default" type="button" @click="action('toggle_complete',todo.id)">
+            <!--点击按钮绑定事件=方法 全部变成了 action(方法名,参数)-->
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        {{todo.title}}
+        <div class="btn-group" style="float:right;">
+            <!--按钮组-->
+            <button class="btn btn-default"@click="action('toggle_detail',todo.id)">
+                <span class="glyphicon glyphicon-option-horizontal"></span>
+            </button>
+            <button class="btn btn-default"@click="action('remove',todo.id)">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            <button class="btn btn-default"@click="action('set_current',todo)">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+        </div>
+        <div v-if="todo.show_detail" class="detail">
+            {{todo.desc || '暂无详情'}}
+        </div>
+    </div>
+</template>
+<script src="lib/vue.js"></script>
+<script src="js/myStorage.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+*{
+    font-family: 微软雅黑;
+    box-sizing: border-box;
+    position: relative;
+}
+input,button,textarea{
+    border:1px solid rgba(0,0,0,.1);
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+}
+
+input{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 0;
+}
+
+textarea{
+    height: 100px;
+}
+#task-input{
+    background: #eeeeee;
+}
+form.list-group-item{
+    padding: 0;
+}
+#main{
+    max-width: 550px;
+    margin: 10px auto;
+}
+
+.navbar,
+.header{
+    text-align: center;
+}
+.navbar{
+    background: orangered;
+    color: #ffffff;
+}
+.navbar h1{
+    font-size: 25px;
+    margin: 5px;
+    padding: 10px 0;
+}
+.header{
+    font-size: 18px;
+    color: #555555;
+    padding: 10px 0;
+}
